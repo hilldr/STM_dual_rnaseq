@@ -8,7 +8,7 @@
 ## start time
 DT1=$(date '+%d/%m/%Y %H:%M:%S')
 ## location of genome index file on Spence lab server
-INDEX=/data/genomes/GCF_000210855.2_ASM21085v2_translated_cds.faa.gz.idx
+INDEX=/data/genomes/GCF_000210855.2_ASM21085v2_cds_from_genomic.fna.gz.idx
 ## email address for notifications
 EMAIL=d2.david.hill@gmail.com
 ## This is the directory where the kallisto results will be deposited
