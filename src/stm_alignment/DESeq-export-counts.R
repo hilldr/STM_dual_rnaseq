@@ -13,6 +13,7 @@ getwd()
 
 ## load prerequisites
 library(magrittr)
+library(dplyr)
 
 ## Differential expression of kallisto results with DESeq2
 kallisto.results.dir.hs <- "../results/Run_2286/H_sapiens"
