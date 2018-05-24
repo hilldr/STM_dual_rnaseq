@@ -11,6 +11,9 @@
 ## Check directory - ../STM_dual_rnaseq/src
 getwd()
 
+## load prerequisites
+library(magrittr)
+
 ## Differential expression of kallisto results with DESeq2
 kallisto.results.dir.hs <- "../results/Run_2286/H_sapiens"
 kallisto.results.dir.stm <- "../results/Run_2286/STM"
@@ -42,9 +45,9 @@ names(files) <- samples$Description
 for(i in seq_along(files)){
   ## Split string
   x <- read.table(file = files[i], sep = '\t', header = TRUE, stringsAsFactors = FALSE) %>% 
-    separate(., 1, into = paste('new', 1:2), sep = '_cds_', remove = TRUE) %>% 
-    separate(., 2, into = 'product_accession', sep = '_([^_]*)$', extra = 'drop') %>% 
-    separate(., 1, into = c('dummy','genomic_accession'), sep = 'lcl.', extra = 'drop') %>% 
+    tidyr::separate(., 1, into = paste('new', 1:2), sep = '_cds_', remove = TRUE) %>% 
+    tidyr::separate(., 2, into = 'product_accession', sep = '_([^_]*)$', extra = 'drop') %>% 
+    tidyr::separate(., 1, into = c('dummy','genomic_accession'), sep = 'lcl.', extra = 'drop') %>% 
     subset(., select = -dummy)
   
   ## Remove the 170 transcripts without IDs (will this fix the tx2gene problem? (NO))
@@ -58,7 +61,7 @@ for(i in seq_along(files)){
   ## Save new formatted files
   name <- paste(samples$Sample_Name[i],paste('_S',i, sep = '') ,'_L007_R1_001.fastq', sep = '')
   sample.dir <- file.path('../results/Run_2286/STM',name)
-  write_tsv(x, path = file.path(sample.dir, 'abundance_formatted.tsv'))
+  readr::write_tsv(x, path = file.path(sample.dir, 'abundance_formatted.tsv'))
 }
 
 ## Switch to new formatted files
@@ -80,7 +83,7 @@ if (all(file.exists(files)) == FALSE) {
 stm.anno <- read.csv('../data/stm_annotation.csv', stringsAsFactors = FALSE)
 ## Filter out rows with no name
 stm.anno <-  filter(stm.anno, !product_accession == '')
-tx2gene <- stm.anno[,c('product_accession', 'name')]
+tx2gene <- stm.anno[, c('product_accession', 'name')]
 tx2gene[is.na(tx2gene$name)] <- 'unknown gene'
 
 ## import kallisto data and generate count dataframe (dds)
