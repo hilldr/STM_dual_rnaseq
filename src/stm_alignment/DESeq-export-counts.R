@@ -45,20 +45,10 @@ names(files) <- samples$Description
 ## String split .tsv file to give product and genomic accession ids
 for(i in seq_along(files)){
   ## Split string
-  x <- read.table(file = files[i], sep = '\t', header = TRUE, stringsAsFactors = FALSE) %>% 
-    tidyr::separate(., 1, into = paste('new', 1:2), sep = '_cds_', remove = TRUE) %>% 
-    tidyr::separate(., 2, into = 'product_accession', sep = '_([^_]*)$', extra = 'drop') %>% 
-    tidyr::separate(., 1, into = c('dummy','genomic_accession'), sep = 'lcl.', extra = 'drop') %>% 
-    subset(., select = -dummy)
-  
-  ## Remove the 170 transcripts without IDs (will this fix the tx2gene problem? (NO))
-  # library(stringr)
-  # x <- filter(x, !str_detect(product_accession, '^[0-9]'))
-  
-  ## Select only product_accession column for ID
-  x <- x[,c(2,3:6)]
-  colnames(x)[1] <- 'target_id'
-  
+  x <- read.table(file = files[i], sep = '\t', header = TRUE, stringsAsFactors = FALSE)
+  x[,1] <- sub('^lcl.NC_[0-9]{,6}.[0-9]_cds_', '', x[,1])
+  x[,1] <- sub('_[0-9]{,4}$', '',x[,1])
+
   ## Save new formatted files
   name <- paste(samples$Sample_Name[i],paste('_S',i, sep = '') ,'_L007_R1_001.fastq', sep = '')
   sample.dir <- file.path('../results/Run_2286/STM',name)
