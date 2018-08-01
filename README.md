@@ -1,10 +1,10 @@
-# Evaluating the differential alignment of host and microbe RNA from STM-injected HIOs
+# Evaluating the differential alignment of host and microbe RNA from ST-injected HIOs
 
 David R. Hill, Ryan Berger, and Basel Abuaita
 
 ## About this repository
 
-This repository will be used to track and coordinate the analysis of RNA-seq datasets related to the differential alignment of host and microbe RNA from STM-injected HIOs
+This repository will be used to track and coordinate the analysis of RNA-seq datasets related to the differential alignment of host and microbe RNA from ST-injected HIOs
 
 ### Structure
 The directory structure is as follows:
