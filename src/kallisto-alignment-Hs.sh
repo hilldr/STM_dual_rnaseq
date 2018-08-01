@@ -12,12 +12,12 @@ INDEX=/data/genomes/Homo_sapiens.GRCh38.rel79.cdna.all.idx
 ## email address for notifications
 EMAIL=d2.david.hill@gmail.com
 ## This is the directory where the kallisto results will be deposited
-RESULTDIR=../results/Run_2286/H_sapiens/
+RESULTDIR=../results/Run_2374/H_sapiens/
 ## make the folder to deposit results
 mkdir -p $RESULTDIR
 
 ## this is the directory that contains the fastq directories
-for dir in ../data/Run_2286/oriordan/*
+for dir in ../data/Run_2374/oriordan/*
 ## for loop will iterate through each directory and find fastq files and run
 ## kallisto with specified arguments
 do
