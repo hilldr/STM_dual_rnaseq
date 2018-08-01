@@ -21,5 +21,5 @@ rsync --copy-links --times --verbose rsync://ftp.ncbi.nlm.nih.gov/genomes/refseq
 
 for file in ../data/genomes/*.fna.gz
 do
-    kallisto index --index=$file
+    kallisto index -i $file\.idx $file
 done
