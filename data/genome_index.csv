@@ -1,0 +1,4 @@
+idx,strain,genbank,short_name
+GCF_000009505.1_ASM950v1_cds_from_genomic.fna.gz.idx,Salmonella enterica subsp. enterica serovar Enteritidis str. P125109,AM933172.1,S. Enteritidis
+GCF_000007545.1_ASM754v1_cds_from_genomic.fna.gz.idx,Salmonella enterica Subsp. enterica serovar Typhi Ty2,AE014613.1,S. Typhi
+GCF_000210855.2_ASM21085v2_cds_from_genomic.fna.gz.idx,Salmonella enterica Subsp. enterica serovar Typhimurium SL1344,FQ312003.1,S. Typhimurium
