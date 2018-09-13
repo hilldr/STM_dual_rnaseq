@@ -73,3 +73,25 @@ STM.info <- info_df(dir = "../../results/Run_2374/STM") %>%
                by = 'idx')
 
 write.csv(STM.info, file = "../../results/STM_alignment_stats.csv")
+
+## extract data from run info files, concatenate into dataframe, & write out
+Hs.info <- info_df(dir = "../../results/Run_2374/H_sapiens") %>%
+    do.call("rbind", .) %>%
+    dplyr::left_join(
+               readr::read_csv(file = "../../data/Run_2374/Run_2374_oriordan.csv",
+                               skip = 18,
+                               col_names = TRUE),
+               by = 'Sample_ID') %>%
+    dplyr::left_join(
+               readr::read_csv(file = "../../data/genome_index.csv",
+                               col_names = TRUE),
+               by = 'idx')
+
+write.csv(Hs.info, file = "../../results/Hs_alignment_stats.csv")
+
+## combine all alignment stats
+aln.stats <- rbind(SE.info,
+                   ST.info,
+                   STM.info,
+                   Hs.info)
+write.csv(aln.stats, file = "../../results/ALL_alignment_stats.csv")
