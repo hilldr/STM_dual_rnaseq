@@ -29,6 +29,35 @@ info_df <- function(dir) {
     return(df)
 }
 
+read_stats <- function(dir) {
+       read.files <- list.files(path = dir,
+                                pattern = "abundance.tsv",
+                                full.names = TRUE,
+                                recursive = TRUE)
+       df <- mapply(
+           FUN = function(x) {
+               ## load TSV
+               data <- readr::read_delim(file = x,
+                                         col_names = TRUE,
+                                         delim = "\t",
+                                         col_types = "cdddd") %>%
+                   dplyr::summarize(sum_est_counts = sum(est_counts),
+                                    mean_est_counts = mean(est_counts),
+                                    over_5_est_counts = sum(est_counts > 5),
+                                    not_0_est_counts = sum(est_counts > 0))
+               data$Sample_ID <- strsplit(x, split = "/")[[1]][6]
+               data$Sample_ID <- strsplit(data$Sample_ID, split = "_")[[1]][1] %>%
+                   paste0("Sample_",.)
+               return(data)
+           },
+           x = read.files,
+           SIMPLIFY = FALSE)
+       return(df)
+
+       }
+                                    
+
+
 ## extract data from run info files, concatenate into dataframe, & write out
 SE.info <- info_df(dir = "../../results/Run_2374/SE") %>%
     do.call("rbind", .) %>%
@@ -37,6 +66,9 @@ SE.info <- info_df(dir = "../../results/Run_2374/SE") %>%
                                skip = 18,
                                col_names = TRUE),
                by = 'Sample_ID') %>%
+    dplyr::left_join(read_stats(dir = "../../results/Run_2374/SE") %>%
+                     do.call("rbind",.),
+                     by = 'Sample_ID') %>%
     dplyr::left_join(
                readr::read_csv(file = "../../data/genome_index.csv",
                                col_names = TRUE),
@@ -52,6 +84,9 @@ ST.info <- info_df(dir = "../../results/Run_2374/ST") %>%
                                skip = 18,
                                col_names = TRUE),
                by = 'Sample_ID') %>%
+    dplyr::left_join(read_stats(dir = "../../results/Run_2374/ST") %>%
+                     do.call("rbind",.),
+                     by = 'Sample_ID') %>%
     dplyr::left_join(
                readr::read_csv(file = "../../data/genome_index.csv",
                                col_names = TRUE),
@@ -67,6 +102,9 @@ STM.info <- info_df(dir = "../../results/Run_2374/STM") %>%
                                skip = 18,
                                col_names = TRUE),
                by = 'Sample_ID') %>%
+    dplyr::left_join(read_stats(dir = "../../results/Run_2374/STM") %>%
+                     do.call("rbind",.),
+                     by = 'Sample_ID') %>%
     dplyr::left_join(
                readr::read_csv(file = "../../data/genome_index.csv",
                                col_names = TRUE),
@@ -82,6 +120,10 @@ Hs.info <- info_df(dir = "../../results/Run_2374/H_sapiens") %>%
                                skip = 18,
                                col_names = TRUE),
                by = 'Sample_ID') %>%
+    dplyr::left_join(read_stats(dir = "../../results/Run_2374/H_sapiens") %>%
+                     do.call("rbind",.),
+                     by = 'Sample_ID') %>%
+
     dplyr::left_join(
                readr::read_csv(file = "../../data/genome_index.csv",
                                col_names = TRUE),
